@@ -32,3 +32,11 @@ You are free to implement the solution in the language of your choice. You can d
 Design and document the solution, provide a class diagram, and provide the necessary examples or commands to demonstrate that the above requirements are met.
 
 Your code shall be able to handle interactions and show the status of the washing machine at any given point in time (e.g., function to open washing machine door, status of current wash).
+
+```mermaid
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```
