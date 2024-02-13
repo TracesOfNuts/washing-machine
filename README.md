@@ -34,9 +34,54 @@ Design and document the solution, provide a class diagram, and provide the neces
 Your code shall be able to handle interactions and show the status of the washing machine at any given point in time (e.g., function to open washing machine door, status of current wash).
 
 ```mermaid
-graph TD;
-    A-->B;
-    A-->C;
-    B-->D;
-    C-->D;
+
+classDiagram
+    class WashingMachine {
+        - machineId: string
+        - status: string
+        - current_balance: number
+        - total_earned: number
+        - total_time_on: number
+        - current_wash_type: WashType
+
+        + accept_coin(coinValue: number): void
+        + select_wash_type(washType: WashType): void
+        + start_wash(): void
+        + cancel_wash(): void
+        + refund(): void
+        + lockDoor(): void
+        + unlockDoor(): void
+        + updateProgress(): void
+        + displayStatistics(): void
+        + resetStatistics(): void
+    }
+
+    class WashType {
+        - name: string
+        - duration: number
+        - cost: number
+    }
+
+    class Coin {
+        - value: number
+    }
+
+    class UserInterface {
+        + displayMessage(): void
+        + promptForWashType(): void
+        + promptForCoins(): void
+        + displayRefund(refundAmount: number): void
+        + displayProgress(progress: number, remainingTime: number): void
+        + displayStatistics(totalTimeOn: number, totalEarned: number): void
+    }
+
+    class Maintenance {
+        + resetStatistics(): void
+        + displayStatistics(): void
+    }
+
+    WashingMachine o-- WashType : aggregation
+    WashingMachine -- Coin : association
+    WashingMachine -- UserInterface : association
+    WashingMachine -- Maintenance : association
 ```
