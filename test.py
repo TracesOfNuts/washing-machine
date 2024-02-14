@@ -75,19 +75,39 @@ class TestWashingMachine(unittest.TestCase):
         self.wm.refund()
         self.assertEqual(self.wm.total_credited, 0)
 
-    def test_start_quick_wash(self):
+    def test_start_quick_wash_exact_credit(self):
         wash_type = "Quick"
         coins = [Coin(10) for _ in range(20)]  # 2 dollars
         for coin in coins:
             self.wm.accept_coin(coin)
+        self.assertEqual(self.wm.total_credited, 200)
         self.wm.select_wash_type(wash_type)
         self.wm.start_wash()
-        self.assertEqual(self.wm.total_earned, self.wm.wash_types[self.wash_type_index].cost)
-        self.assertEqual(self.wm.total_time_on, self.wm.wash_types[self.wash_type_index].duration)
-
+        self.assertEqual(self.wm.total_earned, self.wm.wash_types[wash_type].cost)
+        self.assertEqual(self.wm.total_time_on, self.wm.wash_types[wash_type].duration)
+        self.assertEqual(self.wm.total_credited, 0)
     
+    def test_start_quick_wash_excess_credit(self):
+        wash_type = "Quick"
+        coins = [Coin(10) for _ in range(30)] # 3 dollars (excess $1)
+        for coin in coins:
+            self.wm.accept_coin(coin)
+        self.assertEqual(self.wm.total_credited, 300)
+        self.wm.select_wash_type(wash_type)
+        self.wm.start_wash()
+        self.assertEqual(self.wm.total_earned, self.wm.wash_types[wash_type].cost)
+        self.assertEqual(self.wm.total_time_on, self.wm.wash_types[wash_type].duration)
+        self.assertEqual(self.wm.total_credited, 0)
+
 
     def test_display_statistics(self):
+        wash_type = "Quick"
+        coins = [Coin(10) for _ in range(30)] # 3 dollars (excess $1)
+        for coin in coins:
+            self.wm.accept_coin(coin)
+        self.assertEqual(self.wm.total_credited, 300)
+        self.wm.select_wash_type(wash_type)
+        self.wm.start_wash()
         self.wm.display_statistics()  # Just calling to ensure no exceptions are raised
 
     def test_reset_statistics(self):

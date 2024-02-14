@@ -33,46 +33,50 @@ Design and document the solution, provide a class diagram, and provide the neces
 
 Your code shall be able to handle interactions and show the status of the washing machine at any given point in time (e.g., function to open washing machine door, status of current wash).
 
+## Class Diagram
+
 ```mermaid
-
 classDiagram
-    class WashingMachine {
-        - machineId: string
-        - status: string
-        - current_balance: number
-        - total_earned: number
-        - total_time_on: number
-        - current_wash_type: WashType
-
-        + accept_coin(coinValue: number): void
-        + select_wash_type(washType: WashType): void
-        + start_wash(): void
-        + cancel_wash(): void
-        + refund(): void
-        + lockDoor(): void
-        + unlockDoor(): void
-        + updateProgress(): void
-        + displayStatistics(): void
-        + resetStatistics(): void
-    }
-
     class WashType {
-        - name: string
-        - duration: number
-        - cost: number
+        - name: str
+        - duration: int
+        - cost: int
+        + __init__(name: str, duration: int, cost: int)
     }
 
     class Coin {
-        - value: number
+        - value: int
+        + ACCEPTED_VALUES: int[]
+        + __init__(value: int)
+    }
+
+    class WashingMachine {
+        - coins_credited: dict(str: int)
+        - coins_earned: dict(str: int)
+        - total_credited: int
+        - current_wash_type: WashType
+        - total_earned: int
+        - is_locked: boolean
+        - total_time_on: int
+        - wash_types: dict(str: WashType)
+        + __init__()
+        + calculate_total_credited(): void
+        + calculate_total_earned(): void
+        + accept_coin(coin: Coin): void
+        + select_wash_type(wash_type: str): boolean
+        + start_wash(): void
+        + refund(): void
+        + display_statistics(): void
+        + reset_statistics(): void
     }
 
     class UserInterface {
         + displayMessage(): void
         + promptForWashType(): void
         + promptForCoins(): void
-        + displayRefund(refundAmount: number): void
-        + displayProgress(progress: number, remainingTime: number): void
-        + displayStatistics(totalTimeOn: number, totalEarned: number): void
+        + displayRefund(refundAmount: int): void
+        + displayProgress(progress: int, remainingTime: int): void
+        + displayStatistics(totalTimeOn: int, totalEarned: int): void
     }
 
     class Maintenance {
@@ -84,4 +88,12 @@ classDiagram
     WashingMachine -- Coin : association
     WashingMachine -- UserInterface : association
     WashingMachine -- Maintenance : association
+```
+
+## Run the code
+
+To test the requirements:
+
+```python
+python test.py -v
 ```

@@ -1,3 +1,5 @@
+import time
+
 class WashType:
     """Represents a wash type with its duration and cost."""
     def __init__(self, name, duration, cost):
@@ -98,7 +100,12 @@ class WashingMachine:
             self.total_earned += self.current_wash_type.cost
             self.total_time_on += self.current_wash_type.duration
             self.total_credited -= self.current_wash_type.cost
-            # Simulate washing process (omitted)
+            # Simulate washing process
+            for i in range(self.current_wash_type.duration):
+                # Update the user on the current progress of the washing job by Percentage and Remaining Time. Use sleep(1) to show 1 minute progress.
+                print(f"Progress: {i / self.current_wash_type.duration * 100:.2f}% | Remaining Time: {self.current_wash_type.duration - i} minutes")
+                time.sleep(1)
+                
             self.is_locked = False
             print(f"Washing complete: {self.current_wash_type.name}")
             if self.total_credited > 0:
@@ -120,7 +127,7 @@ class WashingMachine:
     def display_statistics(self):
         """Displays quick statistics of the washing machine."""
         print(f"Total time on: {self.total_time_on} minutes")
-        print(f"Total earned: ${self.total_earned}")
+        print(f"Total earned: ${self.total_earned / 100:.2f}")
 
     def reset_statistics(self):
         """Resets the washing machine statistics."""
